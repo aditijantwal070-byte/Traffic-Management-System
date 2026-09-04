@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Traffic Management System — Intersection Live View</title>
+    <!-- Google Fonts for sleek tech aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Left Viewport (Intersection & Controller Log) -->
+            <section class="left-section">
+                <!-- Main Card -->
+                <div class="card intersection-card">
+                    <header class="section-header">
+                        <h2 class="section-title">INTERSECTION — LIVE VIEW</h2>
+                    </header>
+                    
+                    <!-- Canvas Container for 4-Way Intersection -->
+                    <div class="intersection-viewport">
+                        <canvas id="trafficCanvas" width="600" height="600"></canvas>
+                    </div>
+
+                    <!-- Legend Bar -->
+                    <div class="legend-bar">
+                        <div class="legend-item">
+                            <span class="legend-box car-box"></span>
+                            <span>car</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-box ambulance-box"></span>
+                            <span>ambulance</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-box green-box"></span>
+                            <span>green — right of way</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-box red-box"></span>
+                            <span>red — holding</span>
+                        </div>
+                    </div>
+
+                    <!-- Controller Log -->
+                    <div class="log-section">
+                        <h3 class="log-title">CONTROLLER LOG</h3>
+                        <div class="log-console" id="logConsole">
+                            <!-- Dynamic timestamped logs inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Subtext -->
+                <footer class="footer-info">
+                    <span>DSA: priority queue / sorting for green-light allocation</span>
+                    <span class="dot-separator">•</span>
+                    <span>OOP: Vehicle, Road, TrafficSignal, TrafficController classes</span>
+                </footer>
+            </section>
+
+            <!-- Right Sidebar (Road Controls) -->
+            <aside class="right-section">
+                <div class="card controls-card">
+                    <header class="section-header">
+                        <h2 class="section-title">ROAD CONTROLS</h2>
+                    </header>
+
+                    <div class="roads-list" id="roadsList">
+                        <!-- Road A -->
+                        <div class="road-control-item" data-road="A">
+                            <div class="road-info">
+                                <div class="road-name-row">
+                                    <span class="status-indicator indicator-A" id="ind-A"></span>
+                                    <span class="road-name">Road A</span>
+                                    <span class="emergency-badge" id="badge-A" style="display:none;">🚨</span>
+                                </div>
+                                <div class="road-meta" id="meta-A">0 vehicles on road</div>
+                            </div>
+                            <div class="road-actions">
+                                <button class="btn btn-icon" onclick="removeCar('A')" title="Remove Vehicle">-</button>
+                                <button class="btn btn-icon" onclick="addCar('A')" title="Add Car">+</button>
+                                <button class="btn btn-send" onclick="sendAmbulance('A')" title="Send Ambulance">
+                                    <span class="ambulance-icon">🚨</span> Send
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Road B -->
+                        <div class="road-control-item" data-road="B">
+                            <div class="road-info">
+                                <div class="road-name-row">
+                                    <span class="status-indicator indicator-B" id="ind-B"></span>
+                                    <span class="road-name">Road B</span>
+                                    <span class="emergency-badge" id="badge-B" style="display:none;">🚨</span>
+                                </div>
+                                <div class="road-meta" id="meta-B">0 vehicles on road</div>
+                            </div>
+                            <div class="road-actions">
+                                <button class="btn btn-icon" onclick="removeCar('B')" title="Remove Vehicle">-</button>
+                                <button class="btn btn-icon" onclick="addCar('B')" title="Add Car">+</button>
+                                <button class="btn btn-send" onclick="sendAmbulance('B')" title="Send Ambulance">
+                                    <span class="ambulance-icon">🚨</span> Send
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Road C -->
+                        <div class="road-control-item" data-road="C">
+                            <div class="road-info">
+                                <div class="road-name-row">
+                                    <span class="status-indicator indicator-C" id="ind-C"></span>
+                                    <span class="road-name">Road C</span>
+                                    <span class="emergency-badge" id="badge-C" style="display:none;">🚨</span>
+                                </div>
+                                <div class="road-meta" id="meta-C">0 vehicles on road</div>
+                            </div>
+                            <div class="road-actions">
+                                <button class="btn btn-icon" onclick="removeCar('C')" title="Remove Vehicle">-</button>
+                                <button class="btn btn-icon" onclick="addCar('C')" title="Add Car">+</button>
+                                <button class="btn btn-send" onclick="sendAmbulance('C')" title="Send Ambulance">
+                                    <span class="ambulance-icon">🚨</span> Send
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Road D -->
+                        <div class="road-control-item" data-road="D">
+                            <div class="road-info">
+                                <div class="road-name-row">
+                                    <span class="status-indicator indicator-D" id="ind-D"></span>
+                                    <span class="road-name">Road D</span>
+                                    <span class="emergency-badge" id="badge-D" style="display:none;">🚨</span>
+                                </div>
+                                <div class="road-meta" id="meta-D">0 vehicles on road</div>
+                            </div>
+                            <div class="road-actions">
+                                <button class="btn btn-icon" onclick="removeCar('D')" title="Remove Vehicle">-</button>
+                                <button class="btn btn-icon" onclick="addCar('D')" title="Add Car">+</button>
+                                <button class="btn btn-send" onclick="sendAmbulance('D')" title="Send Ambulance">
+                                    <span class="ambulance-icon">🚨</span> Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Global Simulation Buttons -->
+                    <div class="global-controls">
+                        <button class="btn btn-primary btn-run" id="toggleRunBtn" onclick="toggleRun()">
+                            <span id="runIcon">▶</span> <span id="runText">RUN</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="stepSimulation()">Step</button>
+                        <button class="btn btn-secondary" onclick="randomizeTraffic()">Randomize</button>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Simulation Scripts -->
+    <script src="app_cpp_bridge.js?v=3"></script>
+    <script src="renderer.js?v=3"></script>
+</body>
+</html>
